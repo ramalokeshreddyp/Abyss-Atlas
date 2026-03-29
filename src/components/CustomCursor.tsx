@@ -1,9 +1,10 @@
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { motion, useMotionValue, useSpring, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 const CustomCursor = () => {
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
+  const prefersReducedMotion = useReducedMotion();
   const [isHovering, setIsHovering] = useState(false);
   const [isClicking, setIsClicking] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -13,7 +14,9 @@ const CustomCursor = () => {
   const y = useSpring(cursorY, springConfig);
 
   useEffect(() => {
-    // Detect touch/mobile
+    const interactiveSelector = "a, button, [role='button'], .cursor-pointer, input, textarea, select";
+
+    // Detect touch/mobile pointer so cursor is only enabled on precise pointers.
     const checkMobile = () => setIsMobile(window.matchMedia("(pointer: coarse)").matches);
     checkMobile();
     window.addEventListener("resize", checkMobile);
@@ -26,41 +29,50 @@ const CustomCursor = () => {
     const handleMouseDown = () => setIsClicking(true);
     const handleMouseUp = () => setIsClicking(false);
 
-    const handleHoverStart = () => setIsHovering(true);
-    const handleHoverEnd = () => setIsHovering(false);
+    const handlePointerOver = (e: MouseEvent) => {
+      if ((e.target as HTMLElement | null)?.closest(interactiveSelector)) {
+        setIsHovering(true);
+      }
+    };
+
+    const handlePointerOut = (e: MouseEvent) => {
+      if ((e.target as HTMLElement | null)?.closest(interactiveSelector)) {
+        setIsHovering(false);
+      }
+    };
 
     window.addEventListener("mousemove", moveCursor);
     window.addEventListener("mousedown", handleMouseDown);
     window.addEventListener("mouseup", handleMouseUp);
-
-    // Detect hover on interactive elements
-    const observer = new MutationObserver(() => {
-      document.querySelectorAll("a, button, [role='button'], .cursor-pointer, input, textarea, select").forEach((el) => {
-        el.addEventListener("mouseenter", handleHoverStart);
-        el.addEventListener("mouseleave", handleHoverEnd);
-      });
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
-    // Initial pass
-    document.querySelectorAll("a, button, [role='button'], .cursor-pointer, input, textarea, select").forEach((el) => {
-      el.addEventListener("mouseenter", handleHoverStart);
-      el.addEventListener("mouseleave", handleHoverEnd);
-    });
+    window.addEventListener("mouseover", handlePointerOver);
+    window.addEventListener("mouseout", handlePointerOut);
 
     return () => {
       window.removeEventListener("mousemove", moveCursor);
       window.removeEventListener("mousedown", handleMouseDown);
       window.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("mouseover", handlePointerOver);
+      window.removeEventListener("mouseout", handlePointerOut);
       window.removeEventListener("resize", checkMobile);
-      observer.disconnect();
     };
   }, [cursorX, cursorY]);
 
-  if (isMobile) return null;
+  useEffect(() => {
+    if (!isMobile && !prefersReducedMotion) {
+      document.body.classList.add("custom-cursor-enabled");
+    } else {
+      document.body.classList.remove("custom-cursor-enabled");
+    }
+
+    return () => {
+      document.body.classList.remove("custom-cursor-enabled");
+    };
+  }, [isMobile, prefersReducedMotion]);
+
+  if (isMobile || prefersReducedMotion) return null;
 
   return (
     <>
-      <style>{`* { cursor: none !important; }`}</style>
       {/* Outer ring */}
       <motion.div
         className="fixed top-0 left-0 z-[9999] pointer-events-none mix-blend-difference"

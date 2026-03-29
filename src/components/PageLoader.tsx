@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 
 const PageLoader = ({ onComplete }: { onComplete: () => void }) => {
@@ -27,14 +27,12 @@ const PageLoader = ({ onComplete }: { onComplete: () => void }) => {
     progress < 100 ? "Approaching the abyss..." : "Welcome to the deep.";
 
   return (
-    <AnimatePresence>
-      {phase !== "reveal" || progress < 100 ? null : null}
-      <motion.div
-        className="fixed inset-0 z-[200] flex flex-col items-center justify-center"
-        style={{ background: "hsl(210 60% 6%)" }}
-        exit={{ opacity: 0, scale: 1.1 }}
-        transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
-      >
+    <motion.div
+      className="fixed inset-0 z-[200] flex flex-col items-center justify-center"
+      style={{ background: "hsl(210 60% 6%)" }}
+      exit={{ opacity: 0, scale: 1.1 }}
+      transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+    >
         {/* Animated rings */}
         {[1, 2, 3].map((ring) => (
           <motion.div
@@ -129,8 +127,7 @@ const PageLoader = ({ onComplete }: { onComplete: () => void }) => {
             }}
           />
         ))}
-      </motion.div>
-    </AnimatePresence>
+    </motion.div>
   );
 };
 

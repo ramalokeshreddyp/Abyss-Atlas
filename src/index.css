@@ -137,6 +137,17 @@ html {
   scroll-behavior: smooth;
 }
 
+body.custom-cursor-enabled,
+body.custom-cursor-enabled a,
+body.custom-cursor-enabled button,
+body.custom-cursor-enabled input,
+body.custom-cursor-enabled textarea,
+body.custom-cursor-enabled select,
+body.custom-cursor-enabled [role='button'],
+body.custom-cursor-enabled .cursor-pointer {
+  cursor: none !important;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
@@ -153,4 +164,18 @@ html {
 
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(185 80% 55% / 0.5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
