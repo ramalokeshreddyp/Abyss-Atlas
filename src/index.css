@@ -1,0 +1,156 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 60% 6%;
+    --foreground: 195 30% 90%;
+
+    --card: 210 50% 10%;
+    --card-foreground: 195 30% 90%;
+
+    --popover: 210 50% 10%;
+    --popover-foreground: 195 30% 90%;
+
+    --primary: 185 80% 55%;
+    --primary-foreground: 210 60% 6%;
+
+    --secondary: 210 40% 16%;
+    --secondary-foreground: 195 30% 85%;
+
+    --muted: 210 30% 14%;
+    --muted-foreground: 200 15% 55%;
+
+    --accent: 185 90% 45%;
+    --accent-foreground: 210 60% 6%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 210 30% 18%;
+    --input: 210 30% 18%;
+    --ring: 185 80% 55%;
+
+    --radius: 0.75rem;
+
+    /* Ocean depth colors */
+    --ocean-surface: 195 85% 55%;
+    --ocean-sunlight: 200 75% 40%;
+    --ocean-twilight: 215 65% 22%;
+    --ocean-midnight: 220 55% 10%;
+    --ocean-abyss: 225 60% 4%;
+    --ocean-glow: 175 100% 60%;
+    --ocean-glow-soft: 185 80% 50%;
+    --ocean-sand: 38 40% 70%;
+    --ocean-coral: 12 70% 55%;
+    --ocean-kelp: 145 50% 35%;
+
+    /* Gradients */
+    --gradient-depth: linear-gradient(180deg, 
+      hsl(195 85% 55%) 0%, 
+      hsl(200 75% 40%) 20%, 
+      hsl(215 65% 22%) 45%, 
+      hsl(220 55% 10%) 70%, 
+      hsl(225 60% 4%) 100%);
+
+    --gradient-glow: radial-gradient(ellipse, 
+      hsl(175 100% 60% / 0.3) 0%, 
+      transparent 70%);
+
+    --gradient-surface: linear-gradient(180deg,
+      hsl(195 85% 55% / 0.1) 0%,
+      hsl(200 75% 40% / 0.05) 100%);
+
+    /* Shadows */
+    --shadow-glow: 0 0 30px hsl(185 80% 55% / 0.3);
+    --shadow-deep: 0 20px 60px hsl(225 60% 4% / 0.5);
+
+    --font-display: 'Playfair Display', serif;
+    --font-body: 'Inter', sans-serif;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .font-body {
+    font-family: var(--font-body);
+  }
+
+  .text-glow {
+    text-shadow: 0 0 20px hsl(185 80% 55% / 0.5), 0 0 40px hsl(185 80% 55% / 0.2);
+  }
+
+  .text-glow-strong {
+    text-shadow: 0 0 30px hsl(175 100% 60% / 0.7), 0 0 60px hsl(175 100% 60% / 0.3);
+  }
+
+  .bg-ocean-gradient {
+    background: var(--gradient-depth);
+  }
+
+  .bg-glow-radial {
+    background: var(--gradient-glow);
+  }
+
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .shadow-deep {
+    box-shadow: var(--shadow-deep);
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(210 60% 6%);
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(185 80% 55% / 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(185 80% 55% / 0.5);
+}
